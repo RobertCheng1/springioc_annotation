@@ -1,5 +1,6 @@
 package com.company.service;
 
+import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -21,12 +22,18 @@ public class UserService {
 	// 		new User(1, "bob@example.com", "password", "Bob"), // bob
 	// 		new User(2, "alice@example.com", "password", "Alice"), // alice
 	// 		new User(3, "tom@example.com", "password", "Tom"))); // tom
-
-	private List<User> users = Arrays.asList(
+	//
+	// Arrays.asList 只能创建只读 list:
+	// private List<User> users = Arrays.asList(
+	// 		new User(1, "bob@example.com", "password", "Bob"), // bob
+	// 		new User(2, "alice@example.com", "password", "Alice"), // alice
+	// 		new User(3, "tom@example.com", "password", "Tom") // tom
+	// );
+	private List<User> users = Lists.newArrayList(
 			new User(1, "bob@example.com", "password", "Bob"), // bob
 			new User(2, "alice@example.com", "password", "Alice"), // alice
 			new User(3, "tom@example.com", "password", "Tom") // tom
-			);
+	);
 
 	public User login(String email, String password) {
 		for (User user : users) {
@@ -45,11 +52,18 @@ public class UserService {
 	}
 
 	public User register(String email, String password, String name) {
-		users.forEach((user) -> {
+		// Java versoin:
+		// users.forEach((user) -> {
+		// 	if (user.getEmail().equalsIgnoreCase(email)) {
+		// 		throw new RuntimeException("email exist.");
+		// 	}
+		// });
+		for(User user: users){
 			if (user.getEmail().equalsIgnoreCase(email)) {
 				throw new RuntimeException("email exist.");
 			}
-		});
+		}
+
 		User user = new User(users.stream().mapToLong(u -> u.getId()).max().getAsLong(), email, password, name);
 		users.add(user);
 		mailService.sendRegistrationMail(user);

@@ -10,7 +10,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.time.ZoneId;
 
-@Configuration //表示该类是一个配置类，因为我们创建ApplicationContext时：
+@Configuration //表示该类是一个配置类，因为我们创建ApplicationContext时，使用的实现类是AnnotationConfigApplicationContext，必须传入一个标注了@Configuration的类名。
 @ComponentScan //告诉容器，自动搜索当前类所在的包以及子包，把所有标注为 @Component 的Bean自动创建出来，并根据 @Autowired 进行装配。
 @PropertySource("app.properties") // 表示读取classpath的app.properties
 public class AppConfig {
