@@ -57,13 +57,13 @@ public class AppConfig {
 		 * 有没有其他更简单的配置方式呢？？？
 		 * 有！我们可以使用Annotation配置，可以完全不需要XML，让Spring自动扫描Bean并组装它们。
 		 * 我们把上一节的示例改造一下，先删除XML配置文件，然后，给UserService和MailService添加几个注解。
-		 * 		给MailService添加一个@Component注解:
+		 * 		1. 给MailService添加一个@Component注解:
 		 * 			@Component注解就相当于定义了一个Bean，它有一个可选的名称，默认是mailService，即小写开头的类名。
 		 *		 	联系：Spring开发--IoC容器--定制 Bean 的使用别名，这个联系启发于Spring开发--IoC容器--注入配置的 ===连点成线===
 		 * 		    一个Class名为 SmtpConfig 的Bean，它在Spring容器中的默认名称就是 smtpConfig，除非用 @Qualifier 指定了名称。
-		 *		给UserService添加一个@Component注解和一个@Autowired注解：
-		 *			使用@Autowired就相当于把指定类型的Bean注入到指定的字段中。
-		 * 和XML配置相比，@Autowired大幅简化了注入，因为它不但可以写在set()方法上，还可以直接写在字段上，甚至可以写在构造方法中：
+		 *		2. 给UserService添加一个@Component注解和一个@Autowired注解：
+		 *			使用 @Autowired 就相当于把指定类型的Bean注入到指定的字段中。
+		 * 和XML配置相比，@Autowired大幅简化了注入，因为它不但可以写在set()方法上，还可以直接写在字段上，甚至可以写在构造方法（的方法参数）中：
 		 *      @Component
 		 * 		public class UserService {
 		 * 		    MailService mailService;
@@ -74,9 +74,9 @@ public class AppConfig {
 		 * 		    ...
 		 * 		}
 		 * 使用 Annotation 配合自动扫描能大幅简化Spring的配置，我们只需要保证：
-		 *     每个Bean被标注为@Component并正确使用@Autowired注入；
-		 *     配置类被标注为@Configuration和@ComponentScan；
-		 *     所有Bean均在指定包以及子包内。
+		 *     1. 每个Bean被标注为 @Component 并正确使用 @Autowired 注入；
+		 *     2. 配置类被标注为 @Configuration 和 @ComponentScan；
+		 *     3. 所有Bean均在指定包以及子包内。
 		 * 使用 @ComponentScan 非常方便，但是，我们也要特别注意包的层次结构。
 		 * 通常来说，启动配置AppConfig位于自定义的顶层包（例如com.itranswarp.learnjava），其他Bean按类别放入子包。
 		 *
