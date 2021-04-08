@@ -58,7 +58,7 @@ public class AppConfig {
 		 * 有！我们可以使用Annotation配置，可以完全不需要XML，让Spring自动扫描Bean并组装它们。
 		 * 我们把上一节的示例改造一下，先删除XML配置文件，然后，给UserService和MailService添加几个注解。
 		 * 		1. 给MailService添加一个@Component注解:
-		 * 			@Component注解就相当于定义了一个Bean，它有一个可选的名称，默认是mailService，即小写开头的类名。
+		 * 			@Component注解就相当于定义了一个Bean，它有一个可选的名称，默认是mailService，即小写开头的类名。 ===术语===
 		 *		 	联系：Spring开发--IoC容器--定制 Bean 的使用别名，这个联系启发于Spring开发--IoC容器--注入配置的 ===连点成线===
 		 * 		    一个Class名为 SmtpConfig 的Bean，它在Spring容器中的默认名称就是 smtpConfig，除非用 @Qualifier 指定了名称。
 		 *		2. 给UserService添加一个@Component注解和一个@Autowired注解：
