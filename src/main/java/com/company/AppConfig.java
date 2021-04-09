@@ -11,7 +11,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import java.time.ZoneId;
 
 @Configuration //表示该类是一个配置类，因为我们创建ApplicationContext时，使用的实现类是AnnotationConfigApplicationContext，必须传入一个标注了@Configuration的类名。
-@ComponentScan //告诉容器，自动搜索当前类所在的包以及子包，把所有标注为 @Component 的Bean自动创建出来，并根据 @Autowired 进行装配。
+@ComponentScan //告诉容器，自动搜索当前类所在的包以及子包，把所有标注为 @Component 的Bean自动创建出来，并根据 @Autowired 进行装配。必须合理设计包的层次结构，才能发挥@ComponentScan的威力。
 @PropertySource("app.properties") // 表示读取classpath的app.properties
 public class AppConfig {
 	// 定制 Bean--创建第三方Bean:
@@ -83,7 +83,11 @@ public class AppConfig {
 		 *
 		 * IoC容器--定制 Bean：
 		 * 对于Spring容器来说，当我们把一个Bean标记为 @Component 后，它就会自动为我们创建一个单例（Singleton），即
-		 * 容器初始化时创建Bean，容器关闭前销毁Bean。在容器运行期间，我们调用getBean(Class)获取到的Bean总是同一个实例。
+		 * 容器初始化时创建Bean，容器关闭前销毁Bean。
+		 * ===和IoC容器--IoC原理提到的： IoC容器要负责实例化所有的组件 遥相呼应===
+		 * ===springdb工程中提到的： ((ConfigurableApplicationContext) context).close() 大概就是说的容器关闭，===
+		 * ===进而发散到 new AnnotationConfigApplicationContext(AppConfig.class) 大概就是容器的初始化===
+		 * 在容器运行期间，我们调用getBean(Class)获取到的Bean总是同一个实例。
 		 * 还有一种Bean，我们每次调用getBean(Class)，容器都返回一个新的实例，这种Bean称为Prototype（原型），
 		 * 它的生命周期显然和Singleton不同。声明一个Prototype的Bean时，需要添加一个额外的@Scope注解：
 		 * 		@Component
