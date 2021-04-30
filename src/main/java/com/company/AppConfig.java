@@ -56,14 +56,23 @@ public class AppConfig {
 		 * 它的缺点是写起来非常繁琐，每增加一个组件，就必须把新的Bean配置到XML中。
 		 * 有没有其他更简单的配置方式呢？？？
 		 * 有！我们可以使用Annotation配置，可以完全不需要XML，让Spring自动扫描Bean并组装它们。
-		 * 我们把上一节的示例改造一下，先删除XML配置文件，然后，给UserService和MailService添加几个注解。
-		 * 		1. 给MailService添加一个@Component注解:
-		 * 			@Component注解就相当于定义了一个Bean，它有一个可选的名称，默认是mailService，即小写开头的类名。 ===术语===
+		 * 我们把上一节的示例改造一下，先删除XML配置文件，然后，给 UserService 和 MailService 添加几个注解。
+		 * 		1. 给 MailService 添加一个@Component注解:
+		 * 			@Component注解就相当于定义了一个Bean，它有一个可选的名称，默认是 mailService，即小写开头的类名。 ===术语===
 		 *		 	联系：Spring开发--IoC容器--定制 Bean 的使用别名，这个联系启发于Spring开发--IoC容器--注入配置的 ===连点成线===
 		 * 		    一个Class名为 SmtpConfig 的Bean，它在Spring容器中的默认名称就是 smtpConfig，除非用 @Qualifier 指定了名称。
-		 *		2. 给UserService添加一个@Component注解和一个@Autowired注解：
+		 *		2. 给 UserService 添加一个 @Component 注解和一个 @Autowired 注解：
 		 *			使用 @Autowired 就相当于把指定类型的Bean注入到指定的字段中。
 		 * 和XML配置相比，@Autowired大幅简化了注入，因为它不但可以写在set()方法上，还可以直接写在字段上，甚至可以写在构造方法（的方法参数）中：
+		 * ===和springioc_xml工程中提到的 依赖（的）注入方式 有点类似===
+		 * 		@Component
+		 * 		public class UserService {
+		 * 		    @Autowired
+		 * 		    MailService mailService;
+		 *
+		 * 		    ...
+		 * 		}
+		 *      或者
 		 *      @Component
 		 * 		public class UserService {
 		 * 		    MailService mailService;
@@ -96,7 +105,7 @@ public class AppConfig {
 		 *     		...
 		 * 		}
 		 * Spring对标记为@Bean的方法只调用一次，因此返回的Bean仍然是单例。
-		 * 定制 Bean 的 注入List:
+		 * 定制 Bean 小节中的 注入List:
 		 * 		有些时候，我们会有一系列接口相同，不同实现类的Bean。
 		 * 		例如，注册用户时，我们要对email、password和name这3个变量进行验证。为了便于扩展，我们先定义验证接口：
 		 * 			public interface Validator {
@@ -136,13 +145,13 @@ public class AppConfig {
 		 * 		这样一来，我们每新增一个Validator类型，就自动被Spring装配到Validators中了，非常方便。
 		 * 		因为Spring是通过扫描classpath获取到所有的Bean，而List是有序的，要指定List中Bean的顺序，可以加上@Order注解：
 		 *
-		 * 定制 Bean 的 初始化和销毁:
+		 * 定制 Bean 小节中的 初始化和销毁:
 		 * 		Spring容器会对上述Bean做如下初始化流程：
-		 * 		    a.调用构造方法创建MailService实例；
+		 * 		    a.调用构造方法创建 MailService 实例；
 		 * 		    b.根据@Autowired进行注入；
-		 * 		    c.调用标记有@PostConstruct的init()方法进行初始化。
+		 * 		    c.调用标记有 @PostConstruct 的 init() 方法进行初始化。
 		 * 		而销毁时，容器会首先调用标记有@PreDestroy的shutdown()方法。 Spring只根据Annotation查找无参数方法，对方法名不作要求。
-		 * 定制 Bean 的 使用FactoryBean:
+		 * 定制 Bean 小节中的 使用FactoryBean:
 		 * 		当一个Bean实现了FactoryBean接口后，Spring会先实例化这个工厂，然后调用getObject()创建真正的Bean。
 		 * 		getObjectType()可以指定创建的Bean的类型，因为指定类型不一定与实际类型一致，可以是接口或抽象类。
 		 * 		如果定义了一个FactoryBean，要注意Spring创建的Bean实际上是这个FactoryBean的getObject()方法返回的Bean。
