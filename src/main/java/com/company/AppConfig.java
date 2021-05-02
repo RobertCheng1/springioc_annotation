@@ -91,20 +91,22 @@ public class AppConfig {
 		 *
 		 *
 		 * IoC容器--定制 Bean：
-		 * 对于Spring容器来说，当我们把一个Bean标记为 @Component 后，它就会自动为我们创建一个单例（Singleton），即
-		 * 容器初始化时创建Bean，容器关闭前销毁Bean。
-		 * ===和IoC容器--IoC原理提到的： IoC容器要负责实例化所有的组件 遥相呼应===
-		 * ===springdb工程中提到的： ((ConfigurableApplicationContext) context).close() 大概就是说的容器关闭，===
-		 * ===进而发散到 new AnnotationConfigApplicationContext(AppConfig.class) 大概就是容器的初始化===
-		 * 在容器运行期间，我们调用getBean(Class)获取到的Bean总是同一个实例。
-		 * 还有一种Bean，我们每次调用getBean(Class)，容器都返回一个新的实例，这种Bean称为Prototype（原型），
-		 * 它的生命周期显然和Singleton不同。声明一个Prototype的Bean时，需要添加一个额外的@Scope注解：
-		 * 		@Component
-		 * 		@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE) // @Scope("prototype")
-		 * 		public class MailSession {
-		 *     		...
-		 * 		}
-		 * Spring对标记为@Bean的方法只调用一次，因此返回的Bean仍然是单例。
+		 * 1. 对于Spring容器来说，当我们把一个Bean标记为 @Component 后，它就会自动为我们创建一个单例（Singleton），即
+		 *    容器初始化时创建Bean，容器关闭前销毁Bean。
+		 *    ===和IoC容器--IoC原理提到的： IoC容器要负责实例化所有的组件 遥相呼应===
+		 *    ===springdb工程中提到的： ((ConfigurableApplicationContext) context).close() 大概就是说的容器关闭，===
+		 *    ===进而发散到猜测 new AnnotationConfigApplicationContext(AppConfig.class) 大概就是容器的初始化，
+		 * 	     根据IoC容器--装配Bean中的 ApplicationContext 段 和 小结内容来看，猜测完全正确===
+		 *    在容器运行期间，我们调用getBean(Class)获取到的Bean总是同一个实例。
+		 * 2. 还有一种Bean，我们每次调用getBean(Class)，容器都返回一个新的实例，这种Bean称为Prototype（原型），
+		 *    它的生命周期显然和Singleton不同。声明一个Prototype的Bean时，需要添加一个额外的@Scope注解：
+		 * 			@Component
+		 * 			@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE) // @Scope("prototype")
+		 * 			public class MailSession {
+		 *     			...
+		 * 			}
+		 * 3. Spring对标记为@Bean的方法只调用一次，因此返回的Bean仍然是单例。
+		 * 
 		 * 定制 Bean 小节中的 注入List:
 		 * 		有些时候，我们会有一系列接口相同，不同实现类的Bean。
 		 * 		例如，注册用户时，我们要对email、password和name这3个变量进行验证。为了便于扩展，我们先定义验证接口：
