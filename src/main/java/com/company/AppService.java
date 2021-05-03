@@ -20,7 +20,8 @@ public class AppService {
 	private int version;
 
 	// Spring提供了一个org.springframework.core.io.Resource（注意不是javax.annotation.Resource），
-	// 它可以像String、int一样使用@Value注入  from：Spring开发--IoC容器--使用Resource
+	// 它可以像String、int一样使用@Value注入；注意区分其和注解 @PropertySource 的使用场景
+	// from：Spring开发--IoC容器--使用Resource
 	@Value("classpath:/logo.txt")
 	private Resource resource;
 

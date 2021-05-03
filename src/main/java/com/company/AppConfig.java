@@ -12,8 +12,8 @@ import java.time.ZoneId;
 
 @Configuration //表示该类是一个配置类，因为我们创建ApplicationContext时，使用的实现类是AnnotationConfigApplicationContext，必须传入一个标注了@Configuration的类名。
 @ComponentScan //告诉容器，自动搜索当前类所在的包以及子包，把所有标注为 @Component 的Bean自动创建出来，并根据 @Autowired 进行装配。必须合理设计包的层次结构，才能发挥@ComponentScan的威力。
-@PropertySource("app.properties") // 表示读取classpath的app.properties
-public class AppConfig {
+@PropertySource("app.properties") //表示读取classpath的app.properties；Spring容器看到@PropertySource("app.properties")注解后，自动读取这个配置文件，然后，我们使用@Value正常注入
+public class AppConfig {          //注意区分其和 AppService.java 中的 private Resource resource; 的使用场景
 	// 定制 Bean--创建第三方Bean:
 	// 如果一个Bean不在我们自己的package管理之内，例如ZoneId，如何创建它？
 	// 答案是我们自己在 @Configuration 类中编写一个Java方法(方法名没要求)创建并返回它，注意给方法标记一个@Bean注解：
