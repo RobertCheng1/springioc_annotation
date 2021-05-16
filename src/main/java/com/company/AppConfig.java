@@ -176,6 +176,35 @@ public class AppConfig {          //注意区分其和 AppService.java 中的 pr
 		 * 		Spring容器可以通过@PropertySource自动读取配置，并以@Value("${key}")的形式注入；
 		 * 		可以通过${key:defaultValue}指定默认值；
 		 * 		以#{bean.property}形式注入时，Spring容器自动把指定Bean的指定属性值注入。
+		 *
+		 * IoC容器--使用条件装配:
+		 *  	Spring为应用程序准备了Profile这一概念，用来表示不同的环境。
+		 *  	例如，我们分别定义开发、测试和生产这3个环境：native/tset/production
+		 * 			@Configuration
+		 * 			@ComponentScan
+		 * 			public class AppConfig {
+		 * 			    @Bean
+		 * 			    @Profile("!test")
+		 * 			    ZoneId createZoneId() {
+		 * 			        return ZoneId.systemDefault();
+		 * 			    }
+		 * 			}
+		 *  	在运行程序时，加上JVM参数-Dspring.profiles.active=test就可以指定以test环境启动。
+		 *
+		 *      Spring还可以根据 @Conditional 决定是否创建某个Bean。Spring只提供了@Conditional注解，具体判断逻辑还需要我们自己实现。
+		 *      Spring Boot提供了更多使用起来更简单的条件注解，例如，
+		 *      如果配置文件中存在app.smtp=true，则创建 MailService：
+		 * 			@Component
+		 * 			@ConditionalOnProperty(name="app.smtp", havingValue="true")
+		 * 			public class MailService {
+		 *     			...
+		 * 			}
+		 * 		如果当前classpath中存在类javax.mail.Transport，则创建MailService：
+		 * 			@Component
+		 * 			@ConditionalOnClass(name = "javax.mail.Transport")
+		 * 			public class MailService {
+		 *     			...
+		 * 			}
 		 */
 
 		// AppConfig标注了@Configuration，表示它是一个配置类，因为我们创建ApplicationContext时：
