@@ -166,6 +166,10 @@ public class AppConfig {          //注意区分其和 AppService.java 中的 pr
 		 * 		可用带@Bean标注的方法创建Bean；
 		 * 		可使用@PostConstruct和@PreDestroy对Bean进行初始化和清理；
 		 * 		相同类型的Bean只能有一个指定为@Primary，其他必须用@Quanlifier("beanName")指定别名；
+		 * 			默认情况下，对一种类型的Bean，容器只创建一个实例。
+		 * 			但有些时候，我们需要对一种类型的Bean创建多个实例。这个时候，需要给每个Bean添加不同的名字：===正好和定制Bean章节中的 Scope呼应===
+		 *			a.可以用@Bean("name")指定别名，也可以用@Bean+@Qualifier("name")指定别名。
+		 * 			b.还有一种方法是把其中某个Bean指定为@Primary;这样在注入时如果没有指出Bean的名字，Spring会注入标记有@Primary的Bean。
 		 * 		注入时，可通过别名@Quanlifier("beanName")指定某个Bean；
 		 * 		可以定义FactoryBean来使用工厂模式创建Bean。
 		 * IoC容器--注入配置的小结：
