@@ -69,7 +69,6 @@ public class AppConfig {          //注意区分其和 AppService.java 中的 pr
 		 * 		public class UserService {
 		 * 		    @Autowired
 		 * 		    MailService mailService;
-		 *
 		 * 		    ...
 		 * 		}
 		 *      或者
@@ -172,7 +171,11 @@ public class AppConfig {          //注意区分其和 AppService.java 中的 pr
 		 * 			b.还有一种方法是把其中某个Bean指定为@Primary;这样在注入时如果没有指出Bean的名字，Spring会注入标记有@Primary的Bean。
 		 * 		注入时，可通过别名@Quanlifier("beanName")指定某个Bean；
 		 * 		可以定义FactoryBean来使用工厂模式创建Bean。
+		 *
 		 * IoC容器--注入配置的小结：
+		 * ===和 Spring Boot开发--加载配置文件 遥相呼应===
+		 * ===后来在Spring Boot开发--加载配置文件对应的工程 1springboot-configuration 的 StorageConfiguration 类上居然发现注解 @Configuration===
+		 * ===在Spring Boot开发--集成第三方组件--访问Reids中提到:如果在RedisConfiguration中标注 @Configuration，则可通过Spring Boot的自动扫描机制自动加载，否则，使用@Import手动加载===
 		 * 		Spring容器可以通过@PropertySource自动读取配置，并以@Value("${key}")的形式注入；
 		 * 		可以通过${key:defaultValue}指定默认值；
 		 * 		以#{bean.property}形式注入时，Spring容器自动把指定Bean的指定属性值注入。
