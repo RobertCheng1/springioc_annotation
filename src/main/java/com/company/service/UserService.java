@@ -13,7 +13,7 @@ public class UserService {
 	@Autowired
 	MailService mailService;
 
-	public void setMailService(MailService mailService) {
+	public UserService(@Autowired MailService mailService) {
 		this.mailService = mailService;
 	}
 
