@@ -22,6 +22,10 @@ public class AppService {
 	// Spring提供了一个org.springframework.core.io.Resource（注意不是javax.annotation.Resource），
 	// 它可以像String、int一样使用@Value注入；注意区分其和注解 @PropertySource 的使用场景
 	// from：Spring开发--IoC容器--使用Resource
+	//
+	// 也可以直接指定文件的路径，例如：
+	// @Value("file:/path/to/logo.txt")
+	// private Resource resource;
 	@Value("classpath:/logo.txt")
 	private Resource resource;
 

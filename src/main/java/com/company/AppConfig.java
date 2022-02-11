@@ -13,7 +13,7 @@ import java.time.ZoneId;
 @Configuration //表示该类是一个配置类，因为我们创建ApplicationContext时，使用的实现类是AnnotationConfigApplicationContext，必须传入一个标注了@Configuration的类名。
 @ComponentScan //告诉容器，自动搜索当前类所在的包以及子包，把所有标注为 @Component 的Bean自动创建出来，并根据 @Autowired 进行装配。必须合理设计包的层次结构，才能发挥@ComponentScan的威力。
 @PropertySource("app.properties") //表示读取classpath的app.properties；Spring容器看到@PropertySource("app.properties")注解后，自动读取这个配置文件，然后，我们使用@Value正常注入
-public class AppConfig {          //注意区分其和 AppService.java 中的 private Resource resource; 的使用场景
+public class AppConfig {          //该方式可以极大地简化读取配置的麻烦。注意区分其和 AppService.java 中的 private Resource resource; 的使用场景
 	// 定制 Bean--创建第三方Bean:
 	// 如果一个Bean不在我们自己的package管理之内，例如ZoneId，如何创建它？
 	// 答案是我们自己在 @Configuration 类中编写一个Java方法(方法名没要求)创建并返回它，注意给方法标记一个@Bean注解：
@@ -39,7 +39,7 @@ public class AppConfig {          //注意区分其和 AppService.java 中的 pr
 	ZoneId createZoneId() {
 		return ZoneId.of(zoneId);
 	}
-	// 进阶版2：还可以把注入的注解写到方法参数中：
+	// 进阶版2：还可以把注入的注解写到方法参数中： from：Spring开发--IoC容器--注入配置
 	// @Bean
 	// ZoneId createZoneId(@Value("${app.zone:Z}") String zoneId) {
 	// 	return ZoneId.of(zoneId);
@@ -82,7 +82,7 @@ public class AppConfig {          //注意区分其和 AppService.java 中的 pr
 		 * 		    ...
 		 * 		}
 		 * 使用 Annotation 配合自动扫描能大幅简化Spring的配置，我们只需要保证：
-		 *     1. 每个Bean被标注为 @Component 并正确使用 @Autowired 注入；
+		 *     1. 每个Bean被标注为 @Component 并正确使用 @Autowired 注入；(在Spring的IoC容器中，我们把所有组件统称为JavaBean，即配置一个组件就是配置一个Bean。from:IoC容器--IoC原理)
 		 *     2. 配置类被标注为 @Configuration 和 @ComponentScan；
 		 *     3. 所有Bean均在指定包以及子包内。
 		 * 使用 @ComponentScan 非常方便，但是，我们也要特别注意包的层次结构。
@@ -179,6 +179,7 @@ public class AppConfig {          //注意区分其和 AppService.java 中的 pr
 		 * 		Spring容器可以通过@PropertySource自动读取配置，并以@Value("${key}")的形式注入；
 		 * 		可以通过${key:defaultValue}指定默认值；
 		 * 		以#{bean.property}形式注入时，Spring容器自动把指定Bean的指定属性值注入。
+		 * 	    注意观察#{}这种注入语法，它和${key}不同的是，#{}表示从JavaBean读取属性。"#{smtpConfig.host}"的意思是，从名称为smtpConfig的Bean读取host属性，即调用getHost()方法。
 		 *
 		 * IoC容器--使用条件装配:
 		 *  	Spring为应用程序准备了Profile这一概念，用来表示不同的环境。
